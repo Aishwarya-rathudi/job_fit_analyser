@@ -144,8 +144,7 @@ with st.sidebar:
     3. **Click Analyse** — Claude reads both documents and extracts skills
     4. **Review your results** — match score, gaps, and your learning roadmap
     
-    ---
-    Built with Claude AI · Streamlit · Plotly
+    
     """)
 
 
@@ -210,7 +209,7 @@ if analyse_clicked and ready:
             st.stop()
     
     # Step 2: Run full AI analysis
-    with st.spinner("🤖 Claude is analysing your profile against the job requirements... (this takes ~15 seconds)"):
+    with st.spinner("🤖 Analysing your profile against the job requirements... (this takes ~15 seconds)"):
         try:
             results = full_analysis(cv_text, job_description)
         except Exception as e:
