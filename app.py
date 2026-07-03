@@ -116,19 +116,25 @@ st.markdown("""
 with st.sidebar:
     st.markdown("### ⚙️ Configuration")
     
-    api_key = os.getenv("GEMINI_API_KEY", "")
+    api_key = os.getenv("GROQ_API_KEY", "")
     
     if not api_key:
         api_key = st.text_input(
-            "Gemini API Key",
+            "Groq API Key",
             type="password",
-            help="Get your key at aistudio.google.com",
-            placeholder="AIza..."
+            help="Get your key at console.groq.com",
+            placeholder="gsk_..."
         )
         if api_key:
-            os.environ["GEMINI_API_KEY"] = api_key
+            os.environ["GROQ_API_KEY"] = api_key
+            st.success("✅ API key set!")
     else:
         st.success("✅ API key loaded from .env")
+    
+    if os.getenv("GROQ_API_KEY"):
+        key = os.getenv("GROQ_API_KEY")
+        if not key.startswith("gsk_"):
+            st.warning("⚠️ Key looks wrong — Groq keys start with 'gsk_'")
     
     st.markdown("---")
     st.markdown("### 📖 How It Works")
@@ -174,10 +180,10 @@ with col2:
 # ── Analyse Button ─────────────────────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
 
-ready = uploaded_cv is not None and len(job_description.strip()) > 50 and os.getenv("GEMINI_API_KEY")
+ready = uploaded_cv is not None and len(job_description.strip()) > 50 and os.getenv("GROQ_API_KEY")
 
 if not ready:
-    if not os.getenv("GEMINI_API_KEY"):
+    if not os.getenv("GROQ_API_KEY"):
         st.warning("⚠️ Add your OpenAI API key in the sidebar to get started.")
     elif not uploaded_cv:
         st.info("👆 Upload your CV and paste a job description to begin.")
