@@ -119,7 +119,7 @@ def skills_breakdown_chart(matched_skills: list, gap_skills: list) -> go.Figure:
     
     fig.update_layout(
         barmode="stack",
-        title={"text": "Skills Breakdown by Category", "font": {"color": COLORS["primary"]}, "y": 0.98}
+        title={"text": "Skills Breakdown by Category", "font": {"color": COLORS["primary"]}, "y": 0.98},
         xaxis_title="Number of Skills",
         height=350,
         margin=dict(t=70, b=30, l=10, r=10),
