@@ -1,19 +1,65 @@
 # 🎯 Job Fit Analyser — AI-Powered CV Match Tool
 
-A RAG-based LLM application that analyses your CV against any job description using Claude AI, giving you a match score, skill gap analysis, and a personalised learning roadmap.
+> Upload your CV, paste a job description, and get an instant AI-powered analysis of your fit — with a match score, skill gap breakdown, and personalised learning roadmap.
 
-**Built with:** Python · Anthropic Claude · Streamlit · Plotly
+🔗 **[Live Demo](https://aishwarya-job-fit-analyser.streamlit.app)** &nbsp;|&nbsp; 👩‍💻 **[Portfolio](https://aishwarya-portfolio.site)** &nbsp;|&nbsp; 💼 **[LinkedIn](www.linkedin.com/in/aishwarya-rathudi)**
 
 ---
 
-## ✨ Features
+## 📸 App Preview
 
-- **CV parsing** — supports PDF and DOCX upload
-- **AI skill extraction** — Claude reads both your CV and the job description and extracts structured skill data
-- **Match score** — 0–100% fit score with visual gauge
-- **Gap analysis** — categorised by must-have vs nice-to-have, with learning resources for each gap
-- **Learning timeline** — estimated weeks to close each skill gap
-- **Interview talking points** — Claude suggests how to frame your experience for this specific role
+![Job Fit Analyser Screenshot](https://via.placeholder.com/900x500.png?text=Add+a+screenshot+of+your+app+here)
+
+> 💡 **Tip:** Replace the image above with a real screenshot. Take one with your app running, upload it to your GitHub repo as `screenshot.png`, and update this link.
+
+---
+
+## ✨ What It Does
+
+Most job seekers apply blindly and wonder why they don't hear back. This tool changes that.
+
+Paste any job description + upload your CV → the app uses **Llama 3.3 70B via Groq** to:
+
+- 📊 **Score your fit** — 0 to 100% match against the role
+- ✅ **Show matched skills** — what you already have that the employer wants
+- ❌ **Identify skill gaps** — must-haves vs nice-to-haves you're missing
+- 📚 **Recommend resources** — specific courses to close each gap
+- 📅 **Build a learning timeline** — estimated weeks to become fully qualified
+- 🎤 **Generate interview talking points** — tailored to this specific role
+
+---
+
+## 🧠 How the RAG Pattern Works
+
+This app uses **Retrieval-Augmented Generation (RAG)** — a technique where external documents are injected as context into an LLM prompt, rather than relying on the model's training data alone.
+
+```
+┌──────────────┐     ┌────────────────────┐
+│   Your CV    │     │  Job Description   │
+│ (PDF / DOCX) │     │  (pasted text)     │
+└──────┬───────┘     └────────┬───────────┘
+       │                      │
+       ▼                      ▼
+┌─────────────────────────────────────────┐
+│         Text Extraction Layer           │
+│  pdfplumber / python-docx               │
+└──────────────────┬──────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────┐
+│        Groq API — 3 LLM Calls           │
+│                                         │
+│  Call 1: Extract skills from JD  →JSON  │
+│  Call 2: Extract skills from CV  →JSON  │
+│  Call 3: Gap analysis & scoring  →JSON  │
+└──────────────────┬──────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────┐
+│    Streamlit Dashboard + Plotly Charts  │
+│  Gauge · Bar chart · Timeline · Tips    │
+└─────────────────────────────────────────┘
+```
 
 ---
 
@@ -22,15 +68,15 @@ A RAG-based LLM application that analyses your CV against any job description us
 ```
 job_fit_analyser/
 │
-├── app.py                  # Main Streamlit application (UI + orchestration)
+├── app.py                  # Streamlit UI — layout, inputs, results display
 │
 ├── src/
-│   ├── cv_parser.py        # Extracts text from PDF/DOCX uploads
-│   ├── analyser.py         # Core Claude API calls + prompt templates (RAG logic)
-│   └── charts.py           # Plotly visualisation functions
+│   ├── analyser.py         # Core RAG logic — Groq API calls & prompt templates
+│   ├── cv_parser.py        # Extracts text from PDF and DOCX uploads
+│   └── charts.py           # Plotly visualisations (gauge, bar, timeline)
 │
 ├── tests/
-│   └── test_analyser.py    # Unit tests
+│   └── test_analyser.py    # Unit tests with mocked API responses
 │
 ├── requirements.txt        # Python dependencies
 ├── .env.example            # Environment variable template
@@ -39,122 +85,99 @@ job_fit_analyser/
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Run It Locally
 
-### 1. Clone the repo
+### Prerequisites
+- Python 3.10+
+- A free Groq API key from [console.groq.com](https://console.groq.com)
+
+### Setup
+
 ```bash
+# 1. Clone the repo
 git clone https://github.com/YOUR_USERNAME/job-fit-analyser.git
 cd job-fit-analyser
-```
 
-### 2. Create a virtual environment
-```bash
+# 2. Create virtual environment
 python -m venv venv
 source venv/bin/activate        # Mac/Linux
 venv\Scripts\activate           # Windows
-```
 
-### 3. Install dependencies
-```bash
+# 3. Install dependencies
 pip install -r requirements.txt
-```
 
-### 4. Get your Anthropic API key
-- Go to [console.anthropic.com](https://console.anthropic.com/)
-- Sign up (free credits included)
-- Create an API key
-
-### 5. Set up your environment
-```bash
+# 4. Add your API key
 cp .env.example .env
-# Open .env and paste your API key
-```
+# Open .env and paste your Groq key: GROQ_API_KEY=gsk_...
 
-### 6. Run the app
-```bash
+# 5. Run
 streamlit run app.py
 ```
 
-Open your browser at `http://localhost:8501`
+Open **http://localhost:8501** in your browser.
 
 ---
 
-## 🧠 How the RAG Pattern Works
+## 🌐 Deployment
 
-This app uses **Retrieval-Augmented Generation (RAG)** — the technique of injecting external documents as context into an LLM prompt, rather than relying on the model's training data.
+Deployed on **Streamlit Cloud** (free tier).
 
+To deploy your own copy:
+1. Fork this repo
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app** → select your fork
+3. In **Advanced settings → Secrets**, add:
+```toml
+GROQ_API_KEY = "gsk_your_key_here"
 ```
-┌─────────────────┐     ┌───────────────────┐
-│   Your CV       │     │  Job Description  │
-│ (PDF/DOCX)      │     │  (pasted text)    │
-└────────┬────────┘     └─────────┬─────────┘
-         │                        │
-         ▼                        ▼
-┌────────────────────────────────────────────┐
-│          Text Extraction Layer             │
-│   cv_parser.py  │  raw job description     │
-└────────────────────┬───────────────────────┘
-                     │
-                     ▼
-┌────────────────────────────────────────────┐
-│           Claude API (3 calls)             │
-│                                            │
-│  Call 1: Extract skills from JD → JSON    │
-│  Call 2: Extract skills from CV → JSON    │
-│  Call 3: Compare both → gap analysis      │
-└────────────────────┬───────────────────────┘
-                     │
-                     ▼
-┌────────────────────────────────────────────┐
-│      Streamlit Dashboard + Plotly Charts   │
-│   Match score · Gaps · Timeline · Tips     │
-└────────────────────────────────────────────┘
-```
+4. Click **Deploy** — live in ~2 minutes
 
 ---
 
-## 🚢 Deployment (Free)
+## 🛠️ Tech Stack
 
-### Deploy to Streamlit Cloud
-1. Push code to GitHub
-2. Go to [share.streamlit.io](https://share.streamlit.io)
-3. Connect your GitHub repo
-4. Add `ANTHROPIC_API_KEY` in the Secrets section
-5. Deploy — you get a public URL instantly
-
-### Deploy to Hugging Face Spaces
-1. Create a new Space (select Streamlit SDK)
-2. Upload all project files
-3. Add `ANTHROPIC_API_KEY` in Space Settings → Repository secrets
+| Tool | Purpose |
+|------|---------|
+| **Python** | Core language |
+| **Groq API** (Llama 3.3 70B) | LLM for skill extraction and gap analysis |
+| **Streamlit** | Web app framework |
+| **pdfplumber** | PDF text extraction |
+| **python-docx** | DOCX text extraction |
+| **Plotly** | Interactive charts |
+| **python-dotenv** | Environment variable management |
 
 ---
 
-## 🛠️ Extending This Project
+## 💡 Key Technical Decisions
 
-Ideas to make it more impressive for your portfolio:
+**Why Groq?** Groq's LPU hardware makes inference 10x faster than traditional GPU-based APIs, and the free tier (14,400 requests/day) is sufficient for a production tool. Llama 3.3 70B also produces more reliable structured JSON output than smaller models.
 
-- **Multi-job comparison** — analyse 3 jobs at once and rank them by fit
-- **CV improvement suggestions** — ask Claude to rewrite weak bullets to better match the JD
-- **Salary estimation** — use web search tool to pull salary ranges for each role
-- **Export to PDF** — download your gap analysis as a personalised study plan
-- **Job board scraper** — auto-fetch job descriptions from LinkedIn or Indeed URLs
+**Why 3 separate LLM calls instead of 1?** Breaking the task into focused steps (extract JD skills → extract CV skills → compare) produces significantly more accurate results than asking the model to do everything in one prompt. Each call has a clear, narrow task.
+
+**Why `response_format: json_object`?** Enforcing JSON output at the API level eliminates parsing failures from markdown-wrapped responses, making the app more reliable in production.
 
 ---
 
-## 📦 Dependencies
+## 🔮 Future Improvements
 
-| Package | Purpose |
-|---------|---------|
-| `anthropic` | Claude API client |
-| `streamlit` | Web app framework |
-| `pdfplumber` | PDF text extraction |
-| `python-docx` | DOCX text extraction |
-| `plotly` | Interactive charts |
-| `python-dotenv` | Load .env file |
+- [ ] Multi-job comparison — analyse 3 roles at once and rank by fit
+- [ ] CV rewriter — auto-improve your bullet points to match the JD
+- [ ] Salary estimator — pull market rates for each role via web search
+- [ ] Export to PDF — download your gap analysis as a study plan
+- [ ] Job URL input — auto-fetch JD from a LinkedIn or Indeed link
 
 ---
 
 ## 👩‍💻 Author
 
-**Aishwarya Rathudi** — Data Scientist  
-[Portfolio](https://aishwarya-portfolio.site) · [LinkedIn](#) · [GitHub](#)
+**Aishwarya Rathudi** — Data Scientist based in Dublin, Ireland
+
+MSc Data Analytics · Python · Machine Learning · MLOps · AWS · Azure
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-blue)](https://aishwarya-portfolio.site)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5)](https://linkedin.com/in/YOUR_LINKEDIN)
+
+---
+
+## 📄 Licence
+
+MIT — feel free to fork, adapt, and build on this project.
