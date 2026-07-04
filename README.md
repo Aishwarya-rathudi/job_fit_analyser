@@ -2,7 +2,7 @@
 
 > Upload your CV, paste a job description, and get an instant AI-powered analysis of your fit — with a match score, skill gap breakdown, and personalised learning roadmap.
 
-🔗 **[Live Demo](https://aishwarya-job-fit-analyser.streamlit.app)** &nbsp;|&nbsp; 👩‍💻 **[Portfolio](https://aishwarya-portfolio.site)** &nbsp;|&nbsp; 💼 **[LinkedIn](www.linkedin.com/in/aishwarya-rathudi)**
+🔗 **[Live Demo](https://aishwarya-job-fit-analyser.streamlit.app)** &nbsp;|&nbsp; 👩‍💻 **[Portfolio](https://aishwarya-portfolio.site)** &nbsp;|&nbsp; 💼 **[LinkedIn](https://www.linkedin.com/in/aishwarya-rathudi/)**
 
 ---
 
