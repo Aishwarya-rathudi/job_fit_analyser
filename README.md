@@ -8,7 +8,7 @@
 
 ## 📸 App Preview
 
-![Job Fit Analyser Screenshot](c:\Users\rathu\Desktop\Screenshot-job-fit-analyser app.png)
+![Job Fit Analyser Screenshot]
 
 
 > 💡 **Tip:** Replace the image above with a real screenshot. Take one with your app running, upload it to your GitHub repo as `screenshot.png`, and update this link.
