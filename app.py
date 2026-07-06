@@ -141,7 +141,7 @@ with st.sidebar:
     st.markdown("""
     1. **Upload your CV** (PDF or DOCX)
     2. **Paste a job description**
-    3. **Click Analyse** — Claude reads both documents and extracts skills
+    3. **Click Analyse** 
     4. **Review your results** — match score, gaps, and your learning roadmap
     
     
